@@ -1,3 +1,5 @@
+#try "git add ." for pushing
+
 from PIL import Image
 import numpy
 
