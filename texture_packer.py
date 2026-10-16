@@ -1,7 +1,7 @@
 #try "git add ." for pushing
 
 from PIL import Image
-import numpy
+#import numpy
 
 
 #print(img.getdata)
@@ -54,11 +54,10 @@ def combineChannels(col_space = "RGB",channels = input_chans):
     pack.show()
 
 def lockChannels(channels, active_channel):
-    print(active_channel)
+    print(f'Primary channel: "{active_channel}"')
     newchan = channels.replace(active_channel,"")
-    print(newchan)
     if "B" in newchan:
-        print(f"B is in {newchan}")
+        print(f'Locked channels: "{newchan}"')
 
 def separateChannels(image,col_space):
     # this one splits image into channels
