@@ -1,36 +1,55 @@
-from os import path
 from PIL import Image
 import numpy
-
-
-# locate folder
-AFolder = "X:/Level 5/5001/Tool Texture RePacker/Assets/"
-BFolder =  "E:/Escape studios/CT5001/Scripts/Misc/Assets/" # this is wrong
-if path.isdir(AFolder):
-    Folder = AFolder
-else:
-    Folder = BFolder
-
-
-# 1. User provides image file
-img = Image.open(f"{Folder}Apples.webp") #.convert("RGBA")
 
 
 #print(img.getdata)
 #print(img.mode)
 
+input_chans = {
+    }
 
+chanl_lst = {
+    "R":"data",
+    "G":"data",
+    "B":"data"
+}
+chanl_lst["R"] = "Hello"
 
-"""
-class InputData(channel = None, data = None):
+#print(chanl_lst.keys())
+#print(chanl_lst.values())
+#print(chanl_lst)
+
+#chanl_lst.
+class Channel:
     def __init__(self, channel, data):
         self.channel = channel
         self.data = data
-        pass
-"""
+
+REDchan = Channel("R", None)
+GREENchan = Channel("G", None)
+BLUEchan = Channel("B", None)
+ALPHAchan = Channel("A", None)
+
+chan_lst = {
+    "R":REDchan,
+    "G":GREENchan,
+    "B":BLUEchan,
+    "A":ALPHAchan
+}
+
+
 def updateOutput(): # update the output image placeholder
     print("output updated")
 
+def mergeForOutput(image,active_channel):
+    input_chans[active_channel] = image
+
+
+def combineChannels(col_space = "RGB",channels = input_chans):
+    merge_chans = channels.values()
+    print(merge_chans)
+    pack = Image.merge("RGB",input_chans.values()) ## error here
+    pack.show()
 
 def lockChannels(channels, active_channel):
     print(active_channel)
@@ -39,41 +58,42 @@ def lockChannels(channels, active_channel):
     if "B" in newchan:
         print(f"B is in {newchan}")
 
-def separateChannels(image,image_mode):
+def separateChannels(image,col_space):
     # this one splits image into channels
-    for chan in image_mode:
+    for chan in col_space:
         col = chan
         chan = image.getchannel(chan)
         print (col,chan)
+        #print(chan_lst(col))
+        #chan.save(f"./Assets/{col}.jpg")
 
     return chan
 
 def handler(image, active_channel = "R"): # channel defaulted to "R"
     # detect of image is RGB(A) or Greyscale
-    image_mode = image.mode
+    col_space = image.mode
     #print(f"image mode is working: {img.mode}")
-    match image_mode:
+    match col_space:
         case "L":
             print("this image is greyscale")
+            mergeForOutput(image, active_channel)
+            print(input_chans)
 
         case "RGB":
             print("this image is RBG")
-            lockChannels(image_mode,active_channel)
-            separateChannels(image,image_mode)
+            lockChannels(col_space,active_channel)
+            separateChannels(image,col_space)
         case "RGBA":
             print("this image is RGBA")
-            lockChannels(image_mode,active_channel)
-            separateChannels(image, image_mode)
+            lockChannels(col_space,active_channel)
+            separateChannels(image, col_space)
 
         case _:
-            print(f"other image mode: {image_mode}")
+            print(f"other image mode: {col_space}")
 
     updateOutput()
 
-handler(img)
 
-for letters in "ABC":
-    print(letters)
 
 """
 # this one gets separate files for channels
