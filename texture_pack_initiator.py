@@ -4,7 +4,7 @@ from importlib import reload
 
 reload(tp)
 
-# depriated
+# depricated
 """
 import imp
 imp.reload(tp)
@@ -32,10 +32,10 @@ B_img = openImg (f"./Assets/B.jpg")
 
 #img_orm.show()
 
-tp.handler(img_orm)
+#tp.handler(img_orm)
 
-#tp.handler(R_img,"R")
-#tp.handler(G_img,"G")
-#tp.handler(B_img,"B")
+tp.handler(R_img,"R")
+tp.handler(G_img,"G")
+tp.handler(B_img,"B")
 
-#tp.combineChannels()
+tp.combineChannels()

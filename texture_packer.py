@@ -1,63 +1,34 @@
 #try "git add ." for pushing
 
 from PIL import Image
+import logging  # not showing currently
 #import numpy
-
 
 #print(img.getdata)
 #print(img.mode)
 
-input_chans = {
+input_chan_lst = {
     }
-
-chanl_lst = {
-    "R":"data",
-    "G":"data",
-    "B":"data"
-}
-chanl_lst["R"] = "Hello"
-
-#print(chanl_lst.keys())
-#print(chanl_lst.values())
-#print(chanl_lst)
-
-#chanl_lst.
-class Channel:
-    def __init__(self, channel, data):
-        self.channel = channel
-        self.data = data
-
-REDchan = Channel("R", None)
-GREENchan = Channel("G", None)
-BLUEchan = Channel("B", None)
-ALPHAchan = Channel("A", None)
-
-chan_lst = {
-    "R":REDchan,
-    "G":GREENchan,
-    "B":BLUEchan,
-    "A":ALPHAchan
-}
 
 
 def updateOutput(): # update the output image placeholder
-    print("output updated")
+    logging.info("output updated")
 
 def mergeForOutput(image,active_channel):
-    input_chans[active_channel] = image
+    input_chan_lst[active_channel] = image
 
 
-def combineChannels(col_space = "RGB",channels = input_chans):
-    merge_chans = channels.values()
-    print(merge_chans)
-    pack = Image.merge("RGB",input_chans.values()) ## error here
+def combineChannels(col_space = "RGB"):
+    merge_chans = tuple(input_chan_lst.values())
+    print(f"channels to be merged: {merge_chans}")
+    pack = Image.merge("RGB",merge_chans) ## error here
     pack.show()
 
 def lockChannels(channels, active_channel):
-    print(f'Primary channel: "{active_channel}"')
+    logging.info(f'Primary channel: "{active_channel}"')
     newchan = channels.replace(active_channel,"")
     if "B" in newchan:
-        print(f'Locked channels: "{newchan}"')
+        logging.info(f'Locked channels: "{newchan}"')
 
 def separateChannels(image,col_space):
     # this one splits image into channels
@@ -78,7 +49,6 @@ def handler(image, active_channel = "R"): # channel defaulted to "R"
         case "L":
             print("this image is greyscale")
             mergeForOutput(image, active_channel)
-            print(input_chans)
 
         case "RGB":
             print("this image is RBG")
