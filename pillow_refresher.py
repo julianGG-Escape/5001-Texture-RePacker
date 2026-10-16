@@ -1,9 +1,10 @@
 from os import path
 from PIL import Image
 
+
 # locate folder
-AFolder = "X:/Level 5/5001/Lessons/Misc/Assets/"
-BFolder =  "E:/Escape studios/CT5001/Scripts/Misc/Assets/"
+AFolder = "X:/Level 5/5001/Tool Texture RePacker/Assets/"
+BFolder =  "E:/Escape studios/CT5001/Scripts/Misc/Assets/" # this is wrong
 if path.isdir(AFolder):
     Folder = AFolder
 else:
@@ -28,3 +29,5 @@ B_chan = img.getchannel("B")
 pack = Image.merge("RGB",(R_chan,G_chan,B_chan))
 
 pack.show()
+
+#test this and delete me
