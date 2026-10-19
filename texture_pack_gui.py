@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QWidget,
     QLabel
 )
-
+import testytest as test
 
 
 class MainWindow(QMainWindow):
@@ -23,27 +23,35 @@ class MainWindow(QMainWindow):
         self.resize(1280, 720)
 
         layoutV = QVBoxLayout()
+        layoutH = QHBoxLayout()
 
-        #wgt1 = self.InputArea()
+        Layout1, reset1  = self.DragNDrop()
+        Layout2, reset2 = self.DragNDrop()
 
-        btn1 = self.btn("frist button")
+
+        #btn1 = self.btn("frist button",reset1.rm_image())
         btn2 = self.btn("second button")
+        btn2.clicked.connect(reset2.rm_image)
 
-        layoutV.addWidget(btn1)
-        #layoutV.addWidget(wgt1)
+
+        #layoutV.addWidget(btn1)
+        layoutH.addLayout(Layout1)
+        layoutH.addLayout(Layout2)
+        layoutV.addLayout(layoutH)
         layoutV.addWidget(btn2)
 
         widget = QWidget()
         widget.setLayout(layoutV)
         self.setCentralWidget(widget)
 
-    def InputArea(self, size=(20,20)):
-        widget = QWidget()
-        widget.setAcceptDrops(True)
-        self.lbl = imageLabel()
+    def DragNDrop(self):
+            testApp = test.AppDemo()
+            DnD = QVBoxLayout()
+            DnD.addWidget(testApp)
+            return DnD, testApp
 
-        self.setCentralWidget(lbl)
-        return widget
+    def InputArea(self, size=(20,20)):
+        pass
 
 
     def btn(self, msg="button", command = None):
