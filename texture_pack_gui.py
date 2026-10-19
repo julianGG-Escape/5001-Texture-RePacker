@@ -29,12 +29,13 @@ class MainWindow(QMainWindow):
         Layout2, reset2 = self.DragNDrop()
 
 
-        #btn1 = self.btn("frist button",reset1.rm_image())
+        btn1 = self.btn("frist button")
+        btn1.clicked.connect(reset1.rm_image)
         btn2 = self.btn("second button")
         btn2.clicked.connect(reset2.rm_image)
 
 
-        #layoutV.addWidget(btn1)
+        layoutV.addWidget(btn1)
         layoutH.addLayout(Layout1)
         layoutH.addLayout(Layout2)
         layoutV.addLayout(layoutH)

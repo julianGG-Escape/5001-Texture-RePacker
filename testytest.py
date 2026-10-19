@@ -61,7 +61,8 @@ class AppDemo(QWidget):
 
     def rm_image(self):
         print("resetting img")
-        #self.IMG.setPixmap(QPixmap(file_path))
+        #self.IMG.setPixmap(None)
+        self.IMG.clear
         self.IMG = imageLabel()
 """
 app = QApplication(sys.argv)
