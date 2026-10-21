@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxL
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 
-import texture_pack_handler as tph
+#import texture_pack_handler as tph
 
 global size
 size = 150
@@ -63,8 +63,8 @@ class DnDWidget(QWidget):
 
     def set_image(self,file_path):
         print(f"image file path = {file_path}")
-        tph.handler(file_path)
-        tph.combineChannels()
+        self.tph.handler(file_path)
+        self.tph.combineChannels()
         self.IMG.setPixmap(QPixmap(file_path).scaled(size,size))
 
     def rm_image(self):
