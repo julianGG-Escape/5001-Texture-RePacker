@@ -18,7 +18,7 @@ class imageLabel(QLabel):
             }
         """)
 
-class AppDemo(QWidget):
+class DnDWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("window title")

@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QWidget,
     QLabel
 )
-import testytest as test
+import dnd_widget as dw
 
 
 class MainWindow(QMainWindow):
@@ -46,10 +46,10 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
     def DragNDrop(self):
-            testApp = test.AppDemo()
+            DnDWidget = dw.DnDWidget()
             DnD = QVBoxLayout()
-            DnD.addWidget(testApp)
-            return DnD, testApp
+            DnD.addWidget(DnDWidget)
+            return DnD, DnDWidget
 
     def InputArea(self, size=(20,20)):
         pass
