@@ -22,49 +22,81 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Title")
         self.resize(1280, 720)
 
-        layoutV = QVBoxLayout()
+        l_dnd_widgetR, DnDWidgetR  = self.DragNDrop()
+        l_dnd_widgetG, DnDWidgetG = self.DragNDrop()
+        l_dnd_widgetB, DnDWidgetB = self.DragNDrop()
+        l_dnd_widgetA, DnDWidgetA = self.DragNDrop()
+        
+
+
+
+        btn1 = self.btn()
+        btn1.clicked.connect(DnDWidgetR.rm_image)
+        btn2 = self.btn()
+        btn2.clicked.connect(DnDWidgetG.rm_image)
+        btn3 = self.btn()
+        btn3.clicked.connect(DnDWidgetB.rm_image)
+        btn4 = self.btn()
+        btn4.clicked.connect(DnDWidgetA.rm_image)
+
+
+        # ----------
+        #  LAYOUTS!
+        # ----------
+
         layoutH = QHBoxLayout()
+        layoutV1 = QVBoxLayout()
+        layoutV2 = QVBoxLayout()
 
-        Layout1, reset1  = self.DragNDrop()
-        Layout2, reset2 = self.DragNDrop()
+        layoutR = QHBoxLayout()
+        layoutG = QHBoxLayout()
+        layoutB = QHBoxLayout()
+
+        layoutR.addLayout(l_dnd_widgetR)
+        layoutR.addWidget(btn1)
 
 
-        btn1 = self.btn("frist button")
-        btn1.clicked.connect(reset1.rm_image)
-        btn2 = self.btn("second button")
-        btn2.clicked.connect(reset2.rm_image)
+        layoutG.addLayout(l_dnd_widgetG)
+        layoutG.addWidget(btn2)
 
+        layoutB.addLayout(l_dnd_widgetB)
+        layoutB.addWidget(btn3)
 
-        layoutV.addWidget(btn1)
-        layoutH.addLayout(Layout1)
-        layoutH.addLayout(Layout2)
-        layoutV.addLayout(layoutH)
-        layoutV.addWidget(btn2)
+        layoutV1.addLayout(layoutR)
+        layoutV1.addLayout(layoutG)
+        layoutV1.addLayout(layoutB)
+
+        layoutA = QHBoxLayout()
+
+        layoutA.addLayout(l_dnd_widgetA)
+        layoutA.addWidget(btn4)
+
+        layoutV2.addLayout(layoutA)
+
+        layoutH.addLayout(layoutV1)
+        layoutH.addLayout(layoutV2)
+
+        # ----------
+        #  Create Widget
+        # ----------
 
         widget = QWidget()
-        widget.setLayout(layoutV)
+        widget.setLayout(layoutH)
         self.setCentralWidget(widget)
 
-    def DragNDrop(self):
+    def DragNDrop(self):                # import drag and drop widget
             DnDWidget = dw.DnDWidget()
-            DnD = QVBoxLayout()
-            DnD.addWidget(DnDWidget)
-            return DnD, DnDWidget
+            layout = QVBoxLayout()
+            layout.addWidget(DnDWidget)
+            return layout, DnDWidget
 
     def InputArea(self, size=(20,20)):
         pass
 
 
-    def btn(self, msg="button", command = None):
-
-        def cmd(command=command):
-            if command != None:
-                print("Error, button has no output")
-            else:
-                command()
-
+    def btn(self, msg="X"):
         button = QPushButton(msg)
-        button.clicked.connect(cmd)
+        button.setFixedSize(30,30)
         return button
 
 app = QApplication(sys.argv)

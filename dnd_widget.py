@@ -5,25 +5,30 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxL
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 
+import texture_pack_handler as tph
+
+global size
+size = 150
+
 class imageLabel(QLabel):
     def __init__(self):
         super().__init__()
-
-
-        self.setAlignment(Qt.AlignCenter)
-        self.setText("Drop here")
-        self.setStyleSheet("""
-            QLabel{
-                border: 4px dashed #aaa
-            }
-        """)
+        def SetLayout(self=self):
+            self.setAlignment(Qt.AlignCenter)
+            self.setText("Drop here")
+            self.setStyleSheet("""
+                QLabel{
+                    border: 4px dashed #aaa
+                }
+            """)
+        SetLayout()
 
 class DnDWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("window title")
         self.setAcceptDrops(True)
-        self.resize(40,40)
+        self.setFixedSize(size,size)
         #self.reset = self.rm_image()
 
         mainLayout = QVBoxLayout()
@@ -57,13 +62,17 @@ class DnDWidget(QWidget):
             event.ignore()
 
     def set_image(self,file_path):
-        self.IMG.setPixmap(QPixmap(file_path))
+        print(f"image file path = {file_path}")
+        tph.handler(file_path)
+        tph.combineChannels()
+        self.IMG.setPixmap(QPixmap(file_path).scaled(size,size))
 
     def rm_image(self):
         print("resetting img")
         #self.IMG.setPixmap(None)
-        self.IMG.clear
-        self.IMG = imageLabel()
+        self.IMG.setPixmap(QPixmap())
+        self.IMG.setText("Drop here")
+
 """
 app = QApplication(sys.argv)
 demo = AppDemo()

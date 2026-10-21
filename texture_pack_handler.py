@@ -19,10 +19,15 @@ def mergeForOutput(image,active_channel):
 
 
 def combineChannels(col_space = "RGB"):
-    merge_chans = tuple(input_chan_lst.values())
-    print(f"channels to be merged: {merge_chans}")
-    pack = Image.merge("RGB",merge_chans) ## error here
-    pack.show()
+    print(input_chan_lst)
+    print(len(input_chan_lst))
+    if len(input_chan_lst) >= 3:
+        merge_chans = tuple(input_chan_lst.values())
+        print(f"channels to be merged: {merge_chans}")
+        pack = Image.merge("RGB",merge_chans) ## error here
+        pack.show()
+    else:
+        print("missing a few channels")
 
 def lockChannels(channels, active_channel):
     logging.info(f'Primary channel: "{active_channel}"')
@@ -41,7 +46,8 @@ def separateChannels(image,col_space):
 
     return chan
 
-def handler(image, active_channel = "R"): # channel defaulted to "R"
+def handler(file_path, active_channel = "R"): # channel defaulted to "R"
+    image  =  Image.open(file_path)
     # detect of image is RGB(A) or Greyscale
     col_space = image.mode
     #print(f"image mode is working: {img.mode}")
@@ -61,7 +67,6 @@ def handler(image, active_channel = "R"): # channel defaulted to "R"
 
         case _:
             print(f"other image mode: {col_space}")
-
     updateOutput()
 
 
