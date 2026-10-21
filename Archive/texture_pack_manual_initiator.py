@@ -1,3 +1,5 @@
+# move up a folder to use
+
 import texture_packer as tp
 #from os import path
 from importlib import reload
