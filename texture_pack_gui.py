@@ -66,6 +66,8 @@ class DnDWidget(QWidget):
         if event.mimeData().hasImage:
             event.setDropAction(Qt.CopyAction)
             file_path = event.mimeData().urls()[0].toLocalFile()
+            # "C/:file"
+            # "<number>"
             self.set_image(file_path)
 
             event.accept()
@@ -104,6 +106,9 @@ class MainWindow(QMainWindow):
         l_dnd_widgetG, DnDWidgetG = self.DragNDrop("G")
         l_dnd_widgetB, DnDWidgetB = self.DragNDrop("B")
         l_dnd_widgetA, DnDWidgetA = self.DragNDrop("A")
+
+        l_placeholder, Placeholder = self.DragNDrop("A")
+
         
 
 
@@ -125,6 +130,7 @@ class MainWindow(QMainWindow):
         layoutH = QHBoxLayout()
         layoutV1 = QVBoxLayout()
         layoutV2 = QVBoxLayout()
+        layoutV3 = QVBoxLayout()
 
         layoutR = QHBoxLayout()
         layoutG = QHBoxLayout()
@@ -132,10 +138,15 @@ class MainWindow(QMainWindow):
 
         layoutR.addLayout(l_dnd_widgetR)
         layoutR.addWidget(btn1)
-
+        layoutR.setSizeConstraints(200,200)
+        layoutR.sizeConstraint(200)
+        layoutR.maximumSize(200)
 
         layoutG.addLayout(l_dnd_widgetG)
         layoutG.addWidget(btn2)
+        layoutG.addSpacing(200)
+        # play around with setAlignment()
+
 
         layoutB.addLayout(l_dnd_widgetB)
         layoutB.addWidget(btn3)
@@ -149,10 +160,16 @@ class MainWindow(QMainWindow):
         layoutA.addLayout(l_dnd_widgetA)
         layoutA.addWidget(btn4)
 
+
         layoutV2.addLayout(layoutA)
+        layoutV2.addSpacing(500)
+
+        layoutV3.addLayout(l_placeholder) # this is going to break the code
+
 
         layoutH.addLayout(layoutV1)
         layoutH.addLayout(layoutV2)
+        layoutH.addLayout(layoutV3)
 
         # ----------
         #  Create Widget
