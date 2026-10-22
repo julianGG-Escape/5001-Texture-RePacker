@@ -17,6 +17,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 
 import texture_pack_handler as tph
+from outputWidget import outputWidget
 
 global size
 size = 150
@@ -25,7 +26,7 @@ class imageLabel(QLabel):
     def __init__(self):
         super().__init__()
         def SetLayout(self=self):
-            self.setAlignment(Qt.AlignCenter)
+            self.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.setText("Drop here")
             self.setStyleSheet("""
                 QLabel{
@@ -102,12 +103,16 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Title")
         self.resize(1280, 720)
 
-        l_dnd_widgetR, DnDWidgetR  = self.DragNDrop("R")
+        l_dnd_widgetR, DnDWidgetR = self.DragNDrop("R")
         l_dnd_widgetG, DnDWidgetG = self.DragNDrop("G")
         l_dnd_widgetB, DnDWidgetB = self.DragNDrop("B")
         l_dnd_widgetA, DnDWidgetA = self.DragNDrop("A")
 
-        l_placeholder, Placeholder = self.DragNDrop("A")
+        #l_placeholder, Placeholder = self.DragNDrop("A")
+        outputWidgetinst = outputWidget()
+
+        l_outputWidget = QVBoxLayout()
+        l_outputWidget.addWidget(outputWidgetinst)
 
         
 
@@ -138,9 +143,7 @@ class MainWindow(QMainWindow):
 
         layoutR.addLayout(l_dnd_widgetR)
         layoutR.addWidget(btn1)
-        layoutR.setSizeConstraints(200,200)
-        layoutR.sizeConstraint(200)
-        layoutR.maximumSize(200)
+
 
         layoutG.addLayout(l_dnd_widgetG)
         layoutG.addWidget(btn2)
@@ -164,7 +167,7 @@ class MainWindow(QMainWindow):
         layoutV2.addLayout(layoutA)
         layoutV2.addSpacing(500)
 
-        layoutV3.addLayout(l_placeholder) # this is going to break the code
+        layoutV3.addLayout(l_outputWidget) # this is going to break the code
 
 
         layoutH.addLayout(layoutV1)
