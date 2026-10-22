@@ -17,7 +17,13 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 
 import texture_pack_handler as tph
-from outputWidget import outputWidget
+import outputWidget
+
+def refreshOutputPath():
+    global save_path
+    save_path = "./Output/Save.png"
+
+refreshOutputPath()
 
 global size
 size = 150
@@ -35,67 +41,26 @@ class imageLabel(QLabel):
             """)
         SetLayout()
 
-class DnDWidget(QWidget):
+
+
+                ############
+                #MainWindow#
+                ############
+"""
+Stupid helper function(class) that doesn't fix the issue
+"""
+class Outputwigi():
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle("window title")
-        self.setAcceptDrops(True)
-        self.setFixedSize(size,size)
-        self.channel = "G"
+        super().__init__()    
+        self.outputWidgetinst = outputWidget.outputWidget(image_path=save_path, cow_name="Alexandra")
+        l_outputWidget = QVBoxLayout()
+        l_outputWidget.addWidget(self.outputWidgetinst)
 
-        mainLayout = QVBoxLayout()
-
-        self.IMG = imageLabel()
-        mainLayout.addWidget(self.IMG)
+    def update(self):
+        refreshOutputPath()
+        self.outputWidgetinst.updateImage(save_path)
 
 
-        self.setLayout(mainLayout)
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasImage:
-            event.accept()
-        else:
-            event.ignore()
-
-    def dragMoveEvent(self, event):
-        if event.mimeData().hasImage:
-            event.accept()
-        else:
-            event.ignore()
-
-    def dropEvent(self, event):
-        if event.mimeData().hasImage:
-            event.setDropAction(Qt.CopyAction)
-            file_path = event.mimeData().urls()[0].toLocalFile()
-            # "C/:file"
-            # "<number>"
-            self.set_image(file_path)
-
-            event.accept()
-        else:
-            event.ignore()
-
-    def set_image(self,file_path):
-        print(f"image file path = {file_path}")
-        self.isLinear = tph.handler(file_path,self.channel)
-        self.IMG.setPixmap(QPixmap(file_path).scaled(size,size))
-        tph.updateOutput()
-
-
-    def rm_image(self):
-        print("resetting img")
-        #self.IMG.setPixmap(None)
-        if self.isLinear:
-            tph.input_chan_lst.pop(self.channel)
-        print(f"new tph input chan list: {list(tph.input_chan_lst.keys())}")
-        self.IMG.setPixmap(QPixmap())
-        self.IMG.setText("Drop here")
-        tph.updateOutput()
-
-
-                                    ############
-                                    #MainWindow#
-                                    ############
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -103,18 +68,31 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Title")
         self.resize(1280, 720)
 
+        """
+        I'm not actually using the "outputWigi"
+        """
+        self.outputWidgetinst = outputWidget.outputWidget(image_path=save_path, cow_name="Alexandra")
+        l_outputWidget = QVBoxLayout()
+        l_outputWidget.addWidget(self.outputWidgetinst)
+
+  
+
         l_dnd_widgetR, DnDWidgetR = self.DragNDrop("R")
         l_dnd_widgetG, DnDWidgetG = self.DragNDrop("G")
         l_dnd_widgetB, DnDWidgetB = self.DragNDrop("B")
         l_dnd_widgetA, DnDWidgetA = self.DragNDrop("A")
 
-        #l_placeholder, Placeholder = self.DragNDrop("A")
-        outputWidgetinst = outputWidget()
-
-        l_outputWidget = QVBoxLayout()
-        l_outputWidget.addWidget(outputWidgetinst)
-
         
+        """ OLD method
+        #l_placeholder, Placeholder = self.DragNDrop("A")
+        #outputWidgetinst = outputWidget.outputWidget()
+
+        #print(f"DnDWidgetA: {DnDWidgetA}")
+        #print(f"outputWidgetInst: {outputWidgetinst}")
+
+        #l_outputWidget = QVBoxLayout()
+        #l_outputWidget.addWidget()
+        """
 
 
 
@@ -182,15 +160,13 @@ class MainWindow(QMainWindow):
         widget.setLayout(layoutH)
         self.setCentralWidget(widget)
 
+
     def DragNDrop(self,channel):                # import drag and drop widget
-            DnDWidgetinst = DnDWidget()
+            DnDWidgetinst = self.DnDWidget()
             DnDWidgetinst.channel = channel
             layout = QVBoxLayout()
             layout.addWidget(DnDWidgetinst)
             return layout, DnDWidgetinst
-
-    def InputArea(self, size=(20,20)):
-        pass
 
 
     def btn(self, msg="X"):
@@ -198,8 +174,71 @@ class MainWindow(QMainWindow):
         button.setFixedSize(30,30)
         return button
 
+
+    class DnDWidget(QWidget):
+        def __init__(self):
+            super().__init__()
+            self.setWindowTitle("window title")
+            self.setAcceptDrops(True)
+            self.setFixedSize(size,size)
+            self.channel = "G"
+
+            mainLayout = QVBoxLayout()
+
+            self.IMG = imageLabel()
+            mainLayout.addWidget(self.IMG)
+
+
+            self.setLayout(mainLayout)
+
+        def dragEnterEvent(self, event):
+            if event.mimeData().hasImage:
+                event.accept()
+            else:
+                event.ignore()
+
+        def dragMoveEvent(self, event):
+            if event.mimeData().hasImage:
+                event.accept()
+            else:
+                event.ignore()
+
+        def dropEvent(self, event):
+            if event.mimeData().hasImage:
+                event.setDropAction(Qt.CopyAction)
+                file_path = event.mimeData().urls()[0].toLocalFile()
+                # "C/:file"
+                # "<number>"
+                self.set_image(file_path)
+
+                event.accept()
+            else:
+                event.ignore()
+
+        def set_image(self,file_path):
+            print(f"image file path = {file_path}")
+            self.isLinear = tph.handler(file_path,self.channel, save_path)
+            self.IMG.setPixmap(QPixmap(file_path).scaled(size,size))
+            #tph.updateOutput()
+            OutputwigiInst.update() # not working
+            
+
+
+
+        def rm_image(self):
+            print("resetting img")
+            #self.IMG.setPixmap(None)
+            if self.isLinear:
+                tph.input_chan_lst.pop(self.channel)
+            print(f"new tph input chan list: {list(tph.input_chan_lst.keys())}")
+            self.IMG.setPixmap(QPixmap())
+            self.IMG.setText("Drop here")
+            tph.updateOutput()
+
+
 app = QApplication(sys.argv)
 window = MainWindow()
 
+OutputwigiInst = Outputwigi()
 window.show()
 app.exec()

@@ -10,16 +10,16 @@ input_chan_lst = {
     }
 
 
-def updateOutput(): # update the output image placeholder
+def updateOutput(save_path): # update the output image placeholder
     print("update output function")
     if input_chan_lst:
-        combineChannels()
+        combineChannels(save_path)
 
 def mergeForOutput(image,active_channel):
     input_chan_lst[active_channel] = image
 
 
-def combineChannels(col_space = "RGB"):
+def combineChannels(save_path,col_space = "RGB"):
     #print(input_chan_lst)
     print(list(input_chan_lst.keys()))
     if "A" in input_chan_lst.keys():
@@ -34,7 +34,8 @@ def combineChannels(col_space = "RGB"):
         merge_chans = tuple(input_chan_lst.values())
         print(f"channels to be merged: {merge_chans}")
         pack = Image.merge(col_space,merge_chans) ## error here
-        pack.show()
+        #pack.show()
+        pack.save(save_path)
     else:
         print("missing a few channels")
 
@@ -55,7 +56,7 @@ def separateChannels(image,col_space):
 
     return chan
 
-def handler(file_path, active_channel = "R"): # channel defaulted to "R"
+def handler(file_path, active_channel = "R", save_path="none"): # channel defaulted to "R"
     image  =  Image.open(file_path)
     # detect of image is RGB(A) or Greyscale
     col_space = image.mode
@@ -78,7 +79,7 @@ def handler(file_path, active_channel = "R"): # channel defaulted to "R"
 
         case _:
             print(f"other image mode: {col_space}")
-    #updateOutput()
+    updateOutput(save_path)
     return L
 
 
