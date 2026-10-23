@@ -49,10 +49,11 @@ class imageLabel(QLabel):
 """
 Stupid helper function(class) that doesn't fix the issue
 """
-class Outputwigi():
+
+class Outputwigi(): # dont need this
     def __init__(self):
         super().__init__()    
-        self.outputWidgetinst = outputWidget.outputWidget(image_path=save_path, cow_name="Alexandra")
+        self.outputWidgetinst = outputWidget.outputWidget(image_path=save_path)
         l_outputWidget = QVBoxLayout()
         l_outputWidget.addWidget(self.outputWidgetinst)
 
@@ -71,9 +72,19 @@ class MainWindow(QMainWindow):
         """
         I'm not actually using the "outputWigi"
         """
-        self.outputWidgetinst = outputWidget.outputWidget(image_path=save_path, cow_name="Alexandra")
+
+        self.outputWidgetinst = outputWidget.outputWidget(image_path=save_path)
+        #self.outputWidgetinst = Outputwigi()
+
+
+
+        #self.outputWidgetinst = Outputwigi
         l_outputWidget = QVBoxLayout()
         l_outputWidget.addWidget(self.outputWidgetinst)
+
+        btn5 = self.btn("Update Output",100)
+        btn5.clicked.connect(self.outputWidgetinst.updateImage)
+
 
   
 
@@ -145,11 +156,14 @@ class MainWindow(QMainWindow):
         layoutV2.addLayout(layoutA)
         layoutV2.addSpacing(500)
 
+        layoutV3.addSpacing(200)
+        #layoutV3.addWidget(btn5)
         layoutV3.addLayout(l_outputWidget) # this is going to break the code
 
 
         layoutH.addLayout(layoutV1)
         layoutH.addLayout(layoutV2)
+        layoutH.addSpacing(150)
         layoutH.addLayout(layoutV3)
 
         # ----------
@@ -160,6 +174,9 @@ class MainWindow(QMainWindow):
         widget.setLayout(layoutH)
         self.setCentralWidget(widget)
 
+    def UpdateOutputImage(self):
+        self.outputWidgetinst.updateImage(save_path)
+
 
     def DragNDrop(self,channel):                # import drag and drop widget
             DnDWidgetinst = self.DnDWidget()
@@ -169,9 +186,9 @@ class MainWindow(QMainWindow):
             return layout, DnDWidgetinst
 
 
-    def btn(self, msg="X"):
+    def btn(self, msg="X", button_length = 30):
         button = QPushButton(msg)
-        button.setFixedSize(30,30)
+        button.setFixedSize(button_length,30)
         return button
 
 
@@ -220,7 +237,10 @@ class MainWindow(QMainWindow):
             self.isLinear = tph.handler(file_path,self.channel, save_path)
             self.IMG.setPixmap(QPixmap(file_path).scaled(size,size))
             #tph.updateOutput()
-            OutputwigiInst.update() # not working
+            self.MainWindow = window
+            self.MainWindow.UpdateOutputImage()
+
+            #OutputwigiInst.update() # not working
             
 
 
@@ -239,6 +259,7 @@ class MainWindow(QMainWindow):
 app = QApplication(sys.argv)
 window = MainWindow()
 
-OutputwigiInst = Outputwigi()
+OutputwigiInst = Outputwigi() # dont need this either
+
 window.show()
 app.exec()
