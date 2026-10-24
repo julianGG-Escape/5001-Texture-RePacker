@@ -10,7 +10,7 @@ from PySide6.QtGui import QPixmap
 global size
 size = 150
 
-class imageLabel(QLabel):
+class DnDLabel(QLabel):
     def __init__(self):
         super().__init__()
         def SetLayout(self=self):
@@ -33,7 +33,7 @@ class DnDWidget(QWidget):
 
         mainLayout = QVBoxLayout()
 
-        self.IMG = imageLabel()
+        self.IMG = DnDLabel()
         mainLayout.addWidget(self.IMG)
 
 
