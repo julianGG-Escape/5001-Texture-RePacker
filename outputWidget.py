@@ -12,6 +12,9 @@ from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
 class draggableOutput(QLabel):
     def __init__(self, save_path, parent = None):
         super().__init__(parent)
+        # these don't work
+        #self.setFixedSize(300,300)
+        #self.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.save_path = Path(save_path).resolve()
 
         self.setImage(save_path)
