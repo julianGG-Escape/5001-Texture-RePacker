@@ -1,13 +1,10 @@
 # file of only the widget to drag files out
 
-import sys
 from pathlib import Path
 
 from PySide6.QtCore import Qt, QMimeData, QUrl
 from PySide6.QtGui import QDrag, QPixmap
-from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
-
-# rename save_path -> save_path when working
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
 class draggableOutput(QLabel):
     def __init__(self, save_path, parent = None):
@@ -22,7 +19,7 @@ class draggableOutput(QLabel):
 
     def setImage(self,save_path):
         self.setPixmap(
-            QPixmap(str(self.save_path)).scaled(300,300)
+            QPixmap(str(save_path)).scaled(300,300)
         )
     
     def mouseMoveEvent(self, event):
@@ -34,8 +31,8 @@ class draggableOutput(QLabel):
 
         mime_data.setUrls([QUrl.fromLocalFile(str(self.save_path))])
         drag.setMimeData(mime_data)
-
         drag.exec(Qt.DropAction.CopyAction)
+
 
 
 class outputWidget(QWidget):
@@ -51,4 +48,5 @@ class outputWidget(QWidget):
     def updateImage(self, save_path):
         self.image.setImage(save_path)
         print("updating output image")
+
 
