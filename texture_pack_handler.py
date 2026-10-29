@@ -52,7 +52,7 @@ def separateChannels(image,col_space):
         chan = image.getchannel(chan)
         print (col,chan)
         #print(chan_lst(col))
-        #chan.save(f"./Assets/{col}.jpg")
+        chan.save(f"./test files/{col}.jpg") # save space while testing
 
     return chan
 
@@ -84,42 +84,10 @@ def handler(file_path, active_channel = "R", save_path="none"): # channel defaul
 
 
 
-"""
-# this one gets separate files for channels
-RED_CHANNEL = InputData("R")
-GREEN_INPUT = InputData("G")
-BLUE_INPUT = InputData("B")
-"""
 
-
-
-"""
-class OutputData(format = "RGBA", all_channels = None):
-    Output = Image.merge(format,(all_channels = None))
-    pass
-"""
-
-
-
-
-"""
-print(f"\nRED CHANNEL: {numpy.array(img.getchannel('R'))}")
-print(f"\nALPHA CHANNEL: {numpy.array(img.getchannel('A'))}")
-
-"""
-#can implement numpy, check what channels are occupied
-
-#print(img.getbands())
-#print(img.info)
-
-
-
-
-
-#pack = Image.merge("RGB",(R_chan,G_chan,B_chan))
-
-#R_chan.show()
-#print(R_chan)
-#invertR_chan = R_chan * -1
-#pack.show()
+# Separate  channels for testing
+if __name__ == "__main__":
+    img = Image.open(f"./test files/img.tga")
+    print(img.info) 
+    separateChannels(img,"RGB")
 
